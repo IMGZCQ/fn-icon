@@ -38,3 +38,18 @@
     restart: always
 
 效果如图：
+<img width="1278" height="1399" alt="163950sthv38ptwa8voqi8" src="https://github.com/user-attachments/assets/04c04650-617c-4a23-bcd3-9a771736ec75" />
+![163942kgu4jud9bkk3i0ki](https://github.com/user-attachments/assets/4140516e-583c-442c-8737-ce46d29cce66)
+![163937sw3000f0st0ajt44](https://github.com/user-attachments/assets/267e1dac-6f01-4e7f-b653-212779adb967)
+<img width="421" height="190" alt="012238en9f9djb31abt97m" src="https://github.com/user-attachments/assets/5750fbf3-8d82-4b1a-8133-5286d6a77e90" />
+
+
+
+
+
+
+
+
+
+
+
