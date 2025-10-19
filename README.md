@@ -13,6 +13,9 @@
 1. 修改后没生效可能是浏览器缓存导致，尝试清空浏览器缓存或者使用无痕模式浏览效果
 
 ### 更新日志
+- 2025.10.19 v0.37
+  - 增加登录验证页面！
+ 
 - 2025.10.19 v0.36
   - 修复HTTPS对HTTP不能内网识别问题
     
@@ -45,6 +48,7 @@
 <img width="1278" height="1399" alt="163950sthv38ptwa8voqi8" src="https://github.com/user-attachments/assets/04c04650-617c-4a23-bcd3-9a771736ec75" />
 ![Honeycam 2025-10-18 14-39-20](https://github.com/user-attachments/assets/ac52d99a-771f-41d5-a2fa-4fda997a1136)
 ![163937sw3000f0st0ajt44](https://github.com/user-attachments/assets/267e1dac-6f01-4e7f-b653-212779adb967)
+<img width="715" height="805" alt="PixPin_2025-10-19_17-30-15" src="https://github.com/user-attachments/assets/6a1d08c2-d251-4a35-af59-e267d11aab89" />
 <img width="421" height="190" alt="012238en9f9djb31abt97m" src="https://github.com/user-attachments/assets/5750fbf3-8d82-4b1a-8133-5286d6a77e90" />
 
 
