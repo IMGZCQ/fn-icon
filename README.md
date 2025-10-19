@@ -51,6 +51,8 @@
 <img width="715" height="805" alt="PixPin_2025-10-19_17-30-15" src="https://github.com/user-attachments/assets/6a1d08c2-d251-4a35-af59-e267d11aab89" />
 <img width="421" height="190" alt="012238en9f9djb31abt97m" src="https://github.com/user-attachments/assets/5750fbf3-8d82-4b1a-8133-5286d6a77e90" />
 
+## Star History [![Star History Chart](https://api.star-history.com/svg?repos=imgzcq/fn-icon&type=date&legend=top-left)](https://www.star-history.com/#imgzcq/fn-icon&type=date&legend=top-left)
+
 
 
 
