@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞牛图标管理工具</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 赛博朋克全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 赛博朋克背景和动画 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 霓虹网格背景 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 0, 140, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.2) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+            animation: gridMove 15s linear infinite;
+            opacity: 0.6;
+        }
+        
+        /* 动态噪点背景 */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
+        }
+        
+        /* 霓虹光线效果 */
+        .neon-line {
+            position: absolute;
+            z-index: 0;
+        }
+        
+        .neon-line:nth-child(1) {
+            top: 10%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ff008c, transparent);
+            animation: neonPulse 3s infinite alternate;
+        }
+        
+        .neon-line:nth-child(2) {
+            top: 90%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: neonPulse 4s infinite alternate;
+        }
+        
+        .neon-line:nth-child(3) {
+            top: 0;
+            left: 10%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #00ffff, transparent);
+            animation: neonPulse 5s infinite alternate;
+        }
+        
+        .neon-line:nth-child(4) {
+            top: 0;
+            left: 90%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #ff008c, transparent);
+            animation: neonPulse 6s infinite alternate;
+        }
+        
+        @keyframes neonPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* 故障粒子效果 */
+        .glitch-particle {
+            position: absolute;
+            background: #00ffff;
+            opacity: 0.7;
+            pointer-events: none;
+            animation: glitchMove 10s infinite linear;
+        }
+        
+        @keyframes glitchMove {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% {
+                transform: translate(300px, -300px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 故障文字效果 */
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff008c;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -2px 0 #00ffff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(34px, 9999px, 90px, 0); }
+            10% { clip: rect(78px, 9999px, 32px, 0); }
+            20% { clip: rect(45px, 9999px, 63px, 0); }
+            30% { clip: rect(56px, 9999px, 12px, 0); }
+            40% { clip: rect(24px, 9999px, 89px, 0); }
+            50% { clip: rect(85px, 9999px, 62px, 0); }
+            60% { clip: rect(42px, 9999px, 93px, 0); }
+            70% { clip: rect(13px, 9999px, 57px, 0); }
+            80% { clip: rect(65px, 9999px, 28px, 0); }
+            90% { clip: rect(97px, 9999px, 1px, 0); }
+            100% { clip: rect(47px, 9999px, 36px, 0); }
+        }
+        
+        @keyframes glitch-anim2 {
+            0% { clip: rect(98px, 9999px, 26px, 0); }
+            10% { clip: rect(12px, 9999px, 81px, 0); }
+            20% { clip: rect(73px, 9999px, 47px, 0); }
+            30% { clip: rect(61px, 9999px, 34px, 0); }
+            40% { clip: rect(39px, 9999px, 96px, 0); }
+            50% { clip: rect(53px, 9999px, 22px, 0); }
+            60% { clip: rect(17px, 9999px, 74px, 0); }
+            70% { clip: rect(86px, 9999px, 51px, 0); }
+            80% { clip: rect(41px, 9999px, 88px, 0); }
+            90% { clip: rect(29px, 9999px, 67px, 0); }
+            100% { clip: rect(92px, 9999px, 8px, 0); }
+        }
+        
+        /* 赛博朋克容器样式 */
+        .login-container {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid #ff008c;
+            border-radius: 8px;
+            padding: 40px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 
+                0 0 15px rgba(255, 0, 140, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        /* 赛博朋克容器边框动画 */
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, #ff008c, #00ffff, #ff008c, #00ffff);
+            border-radius: 9px;
+            z-index: -1;
+            animation: borderGlitch 8s linear infinite;
+            background-size: 400%;
+            opacity: 0.8;
+        }
+        
+        @keyframes borderGlitch {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+        
+        /* 容器内部装饰线 */
+        .login-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: scanLine 3s linear infinite;
+        }
+        
+        @keyframes scanLine {
+            0% { transform: translateY(-10px); }
+            100% { transform: translateY(100px); }
+        }
+        
+        /* 标题样式 */
+        .login-title {
+            text-align: center;
+            margin-bottom: 35px;
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 
+                0 0 5px #ff008c,
+                0 0 10px #ff008c,
+                0 0 20px #ff008c;
+            position: relative;
+        }
+        
+        .login-title::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            margin: 15px auto 0;
+            animation: linePulse 2s infinite alternate;
+        }
+        
+        @keyframes linePulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        /* 表单组样式 */
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #00ffff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px #00ffff;
+        }
+        
+        /* 输入框样式 */
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ff008c;
+            border-radius: 4px;
+            background: rgba(10, 10, 10, 0.7);
+            color: #ffffff;
+            font-size: 16px;
+            font-family: 'Rajdhani', sans-serif;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.05);
+            box-shadow: 
+                0 0 10px rgba(0, 255, 255, 0.5),
+                0 0 20px rgba(0, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+        
+        /* 输入框前缀符号 */
+        .form-group::before {
+            content: '>';
+            position: absolute;
+            left: -15px;
+            top: 35px;
+            color: #ff008c;
+            font-size: 18px;
+            text-shadow: 0 0 5px #ff008c;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* 赛博朋克按钮样式 */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #ff008c, #ff6eaa);
+            border: 2px solid #ff008c;
+            border-radius: 4px;
+            color: #0a0a0a;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 0 15px rgba(255, 0, 140, 0.5);
+        }
+        
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .btn-submit:hover {
+            background: linear-gradient(90deg, #00ffff, #66ffff);
+            border-color: #00ffff;
+            transform: translateY(-2px);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.7),
+                0 0 40px rgba(0, 255, 255, 0.5);
+        }
+        
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* 赛博朋克消息提示样式 */
+        .message {
+            text-align: center;
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slideIn 0.3s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.error {
+            background: rgba(255, 0, 140, 0.1);
+            border: 1px solid #ff008c;
+            color: #ff8cbf;
+            box-shadow: 0 0 15px rgba(255, 0, 140, 0.3);
+        }
+        
+        .message.error::before {
+            content: '[ERROR] ';
+            color: #ff008c;
+            font-weight: bold;
+        }
+        
+        .message.success {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: #8cffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        .message.success::before {
+            content: '[SUCCESS] ';
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        /* 技术指标信息 */
+        .tech-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: rgba(0, 255, 255, 0.6);
+            letter-spacing: 1px;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        
+        .tech-info span {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                border-width: 1px;
+            }
+            
+            .login-title {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+            
+            .form-group label {
+                letter-spacing: 1px;
+            }
+            
+            .btn-submit {
+                letter-spacing: 2px;
+                padding: 12px;
+            }
+        }
+    </style>
+    <!-- 引入赛博朋克风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 霓虹光线 -->
+    <div class="neon-line"></div>
+    <div class="neon-line"></div>
+    <div class="neon-line"></div>
+    <div class="neon-line"></div>
+    
+    <!-- 故障粒子容器 -->
+    <div id="glitch-particles"></div>
+    
+    <div class="login-container">
+        <h2 id="page-title" class="login-title">
+            <span class="glitch-text" data-text="飞牛图标管理工具">飞牛图标管理工具</span>
+        </h2>
+        <form id="auth-form" method="post">
+            <div class="form-group">
+                <label for="password">登录密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" id="submit-btn" class="btn-submit">接入系统</button>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+    
+    <!-- 技术信息 -->
+    <div class="tech-info">
+        <span>飞牛图标管理工具</span>
+        <span>By 米恋泥~·</span>
+        <span>组织机构：小宠瞭望塔</span>
+    </div>
+
+    <script>
+        // 生成故障粒子背景
+        function createGlitchParticles() {
+            const container = document.getElementById('glitch-particles');
+            const particleCount = 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'glitch-particle';
+                
+                // 随机大小和形状
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${Math.random() * 20 + 5}px`;
+                
+                // 随机动画方向
+                const direction = Math.random() > 0.5 ? 1 : -1;
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // 随机动画延迟和持续时间
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                // 随机颜色
+                const colors = ['#ff008c', '#00ffff', '#ff008c', '#00ffff'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // 页面加载时创建故障粒子
+        window.addEventListener('DOMContentLoaded', createGlitchParticles);
+        
+        // 页面加载时检查是否需要初始化密码
+        async function checkPasswordStatus() {
+            try {
+                // 尝试访问登录API以检查密码状态
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: 'check_status_only' })
+                });
+                
+                const data = await response.json();
+                
+                // 如果返回密码未初始化的错误，则设置为初始化模式
+                if (!data.success && data.message.includes('未初始化')) {
+                    document.getElementById('page-title').innerHTML = '<span class="glitch-text" data-text="飞牛图标管理工具">飞牛图标管理工具</span>';
+                    document.getElementById('auth-form').action = '/api/init-password';
+                    document.getElementById('submit-btn').textContent = '初始化登录密码';
+                } else {
+                    // 正常登录模式
+                    document.getElementById('page-title').innerHTML = '<span class="glitch-text" data-text="飞牛图标管理工具">飞牛图标管理工具</span>';
+                    document.getElementById('auth-form').action = '/api/login';
+                    document.getElementById('submit-btn').textContent = '接入系统';
+                }
+            } catch (error) {
+                console.error('系统状态检查失败:', error);
+                document.getElementById('message').textContent = '系统连接失败';
+                document.getElementById('message').className = 'message error';
+            }
+        }
+        
+        // 页面加载时执行检查
+        checkPasswordStatus();
+        
+        // 添加屏幕故障效果
+        function triggerScreenGlitch() {
+            const glitchOverlay = document.createElement('div');
+            glitchOverlay.style.position = 'fixed';
+            glitchOverlay.style.top = '0';
+            glitchOverlay.style.left = '0';
+            glitchOverlay.style.width = '100%';
+            glitchOverlay.style.height = '100%';
+            glitchOverlay.style.background = 'rgba(0, 255, 255, 0.1)';
+            glitchOverlay.style.zIndex = '9999';
+            glitchOverlay.style.pointerEvents = 'none';
+            glitchOverlay.style.transform = 'translateY(-100%)';
+            glitchOverlay.style.animation = 'glitchFlash 0.3s ease';
+            
+            document.body.appendChild(glitchOverlay);
+            
+            setTimeout(() => {
+                document.body.removeChild(glitchOverlay);
+            }, 300);
+        }
+        
+        // 添加闪烁动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes glitchFlash {
+                0% { transform: translateY(-100%); opacity: 0; }
+                20% { transform: translateY(0); opacity: 0.8; }
+                40% { transform: translateY(0); opacity: 0.2; }
+                60% { transform: translateY(0); opacity: 0.6; }
+                80% { transform: translateY(0); opacity: 0.3; }
+                100% { transform: translateY(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // 登录表单提交处理
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // 触发屏幕故障效果
+            triggerScreenGlitch();
+            
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+            const isInitMode = document.getElementById('submit-btn').textContent === '初始化登录密码';
+            const apiUrl = isInitMode ? '/api/init-password' : '/api/login';
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageDiv.textContent = data.message;
+                    messageDiv.className = 'message success';
+                    
+                    if (isInitMode) {
+                        // 初始化成功后刷新页面，切换到登录模式
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        // 登录成功后跳转到首页
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 1000);
+                    }
+                } else {
+                    messageDiv.textContent = data.message;
+                    messageDiv.className = 'message error';
+                }
+            } catch (error) {
+                messageDiv.textContent = isInitMode ? '初始化失败，请重试' : '登录失败，请重试';
+                messageDiv.className = 'message error';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>飞牛图标管理工具</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="tech-pattern"></div>
+  <h1>飞牛图标管理工具v0.37 by 米恋泥</h1>
+  
+  <div id="fileData" class="container">
+    <div class="table-container">
+      <table id="dataTable">
+      <thead>
+        <tr>
+          <th>序 号</th>
+          <th>标 题</th>
+          <th>公网/内网 跳转链接</th>
+          <th>网络◀预览▶本地</th>
+          <th>网络/本地 图片URL</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- 数据将通过JS动态加载 -->
+      </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <div class="form-section" id="recordForm">
+    <h3 id="formTitle">添加一只新图标:</h3>
+    <input type="hidden" id="recordId">
+    <div class="form-row">
+      <label>标 题:</label>
+      <input type="text" id="recordTitle" placeholder="标题">
+    </div>
+    <div class="form-row">
+      <label>公网跳转链接:</label>
+      <input type="text" id="recordExternalUrl" placeholder="外网跳转URL">
+    </div>
+    <div class="form-row">
+      <label>内网跳转连接:</label>
+      <input type="text" id="recordInternalUrl" placeholder="内网跳转URL">
+    </div>
+    <div class="form-row">
+      <label>网络图片URL:</label>
+      <input type="text" id="recordNetworkImgUrl" placeholder="可选，不填则用飞牛自带图标（或在conf文件夹手动添加本地图片）">
+    </div>
+    <div class="form-actions">
+      <button id="submitButton" onclick="submitForm()">添 加</button>
+      <button id="resetButton" class="secondary" onclick="resetForm()">重 置</button>
+    </div>
+  </div>
+  
+  <div class="action-section">
+    <button class="logout-btn" onclick="logout()">退出登录</button>
+    <button class="apply-btn" onclick="applySettings()">立即应用当前设置</button>
+  </div>
+  
+  <div id="result" class="result"></div>
+
+  <script>
+    const currentFile = 'fnicon.json';
+    let isEditing = false;
+    
+    // 页面加载时直接加载默认文件数据
+    window.onload = () => {
+      loadFileData();
+    };
+    
+    // 加载文件的数据
+    const loadFileData = () => {
+      fetch(`/api/files/${currentFile}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            renderTable(data.data);
+            showResult({ message: '配置数据加载成功！' }, 'success');
+          } else {
+            showResult({ message: data.message }, 'error');
+          }
+        });
+    };
+    
+    // 渲染表格数据
+    const renderTable = (data) => {
+      const tableBody = document.getElementById('tableBody');
+      tableBody.innerHTML = '';
+      
+      if (!data || data.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = '<td colspan="6" style="text-align: center;">暂无数据</td>';
+        tableBody.appendChild(row);
+        return;
+      }
+      
+      data.forEach(item => {
+        const row = document.createElement('tr');
+        
+        // 本地图片预览
+        const localImgPreview = item['本地图片URL'] ? 
+          `<img src="${item['本地图片URL']}" class="image-preview" alt="本地图片">` : '';
+        
+        // 网络图片预览
+        const networkImgPreview = item['网络图片URL'] ? 
+          `<img src="${item['网络图片URL']}" class="image-preview" alt="网络图片">` : '';
+        
+        row.innerHTML = `
+          <td>${item.序号}</td>
+          <td>
+            ${item.标题}
+            <div class="title-actions">
+              <button class="action-btn small-btn" onclick="editRecord(${item.序号})">编辑</button>
+              <button class="action-btn small-btn" onclick="deleteRecord(${item.序号})">删除</button>
+            </div>
+          </td>
+          <td>
+            <div class="url-container">${item['外网跳转URL'] || ''}</div>
+            <div class="url-container">${item['内网跳转URL'] || ''}</div>
+          </td>
+          <td>
+            <div class="image-container">
+              ${networkImgPreview}${localImgPreview}
+            </div>
+          </td>
+          <td>
+              <div class="url-container">${item['网络图片URL'] || ''}</div>
+              <div class="url-container">${item['本地图片URL'] || ''}</div>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    };
+    
+    // 重置表单
+    const resetForm = () => {
+      document.getElementById('recordId').value = '';
+      document.getElementById('recordTitle').value = '';
+      document.getElementById('recordExternalUrl').value = '';
+      document.getElementById('recordInternalUrl').value = '';
+      document.getElementById('recordNetworkImgUrl').value = '';
+      document.getElementById('formTitle').textContent = '添加一只新图标:';
+      document.getElementById('submitButton').textContent = '添 加';
+      document.getElementById('resetButton').textContent = '重 置';
+      isEditing = false;
+    };
+    
+    // 编辑记录
+    const editRecord = (id) => {
+      fetch(`/api/files/${currentFile}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            const record = data.data.find(item => item.序号 === id);
+            if (record) {
+              document.getElementById('recordId').value = id;
+              document.getElementById('recordTitle').value = record.标题;
+              document.getElementById('recordExternalUrl').value = record['外网跳转URL'] || '';
+              document.getElementById('recordInternalUrl').value = record['内网跳转URL'] || '';
+              document.getElementById('recordNetworkImgUrl').value = record['网络图片URL'] || '';
+              document.getElementById('formTitle').textContent = '修改这只图标:';
+              document.getElementById('submitButton').textContent = '修 改';
+              document.getElementById('resetButton').textContent = '取 消';
+              isEditing = true;
+              
+              // 滚动到表单位置
+              document.getElementById('recordForm').scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        });
+    };
+    
+    // 提交表单（添加或编辑）
+    const submitForm = () => {
+      const record = {
+        标题: document.getElementById('recordTitle').value,
+        '外网跳转URL': document.getElementById('recordExternalUrl').value,
+        '内网跳转URL': document.getElementById('recordInternalUrl').value,
+        '网络图片URL': document.getElementById('recordNetworkImgUrl').value
+      };
+      
+      if (!record.标题) {
+        showResult({ message: '标题不能为空！' }, 'error');
+        return;
+      }
+      
+      let url = `\/api\/files\/${currentFile}`;
+      let method = 'POST';
+      
+      if (isEditing) {
+        const id = document.getElementById('recordId').value;
+        url = `\/api\/files\/${currentFile}\/${id}`;
+        method = 'PUT';
+      }
+      
+      fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          loadFileData(); // 重新加载数据
+          resetForm(); // 重置表单
+        }
+        showResult(data, data.success ? 'success' : 'error');
+      });
+    };
+    
+    // 删除记录
+    const deleteRecord = (id) => {
+      showConfirmDialog(
+        '确定要删除这个图标吗？',
+        () => {
+          // 确认删除操作
+          fetch(`/api/files/${currentFile}/${id}`, {
+            method: 'DELETE'
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              loadFileData(); // 重新加载数据
+            }
+            showResult(data, data.success ? 'success' : 'error');
+          });
+        },
+        () => {
+          // 取消删除操作
+        }
+      );
+    };
+    
+    // 显示自定义确认弹框
+    const showConfirmDialog = (message, onConfirm, onCancel) => {
+      // 移除之前可能存在的弹框
+      const existingOverlay = document.querySelector('.notification-overlay');
+      if (existingOverlay) {
+        existingOverlay.remove();
+      }
+      
+      // 创建遮罩层
+      const overlay = document.createElement('div');
+      overlay.className = 'notification-overlay';
+      
+      // 创建弹框元素
+      const notification = document.createElement('div');
+      notification.className = 'notification confirm-dialog';
+      notification.innerHTML = `
+        <div class="confirm-message">${message}</div>
+        <div class="confirm-buttons">
+          <button class="confirm-btn cancel">取 消</button>
+          <button class="confirm-btn confirm">确 定</button>
+        </div>
+      `;
+      
+      // 添加到遮罩层
+      overlay.appendChild(notification);
+      document.body.appendChild(overlay);
+      
+      // 点击取消按钮
+      notification.querySelector('.confirm-btn.cancel').addEventListener('click', () => {
+        closeNotification(overlay);
+        if (onCancel) onCancel();
+      });
+      
+      // 点击确定按钮
+      notification.querySelector('.confirm-btn.confirm').addEventListener('click', () => {
+        closeNotification(overlay);
+        if (onConfirm) onConfirm();
+      });
+      
+      // 点击遮罩层不关闭，只能点击按钮
+    };
+
+    // 立即应用当前设置
+    const applySettings = () => {
+      showConfirmDialog(
+        '确定要应用当前设置到飞牛桌面吗？',
+        () => {
+          // 确认操作
+          fetch('/api/apply-settings', {
+            method: 'POST'
+          })
+          .then(res => res.json())
+          .then(data => {
+            showResult(data, data.success ? 'success' : 'error');
+          })
+          .catch(error => {
+            showResult({ message: '应用设置失败: ' + error.message }, 'error');
+          });
+        },
+        () => {
+          // 取消操作，不需要做任何事情
+        }
+      );
+    };
+    
+    // 显示结果信息 - 优雅的弹框提示
+    const showResult = (res, type = '') => {
+      // 移除之前可能存在的弹框
+      const existingOverlay = document.querySelector('.notification-overlay');
+      if (existingOverlay) {
+        existingOverlay.remove();
+      }
+      
+      // 创建遮罩层
+      const overlay = document.createElement('div');
+      overlay.className = 'notification-overlay';
+      
+      // 创建弹框元素
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = res.message || JSON.stringify(res, null, 2);
+      
+      // 添加到遮罩层
+      overlay.appendChild(notification);
+      document.body.appendChild(overlay);
+      
+      // 点击遮罩层可以关闭提示
+      overlay.addEventListener('click', () => {
+        closeNotification(overlay);
+      });
+      
+      // 3秒后自动关闭
+      setTimeout(() => {
+        closeNotification(overlay);
+      }, 3000);
+    };
+    
+    // 关闭弹框的函数
+    const closeNotification = (overlay) => {
+      const notification = overlay.querySelector('.notification');
+      if (notification) {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+      }
+      overlay.style.animation = 'fadeOut 0.3s ease-in';
+      
+      // 动画结束后移除元素
+      setTimeout(() => {
+        overlay.remove();
+      }, 300);
+    };
+    
+    // 退出登录函数
+    const logout = () => {
+      showConfirmDialog(
+        '确定要退出登录吗？',
+        () => {
+          // 确认退出登录
+          fetch('/api/logout', {
+            method: 'POST'
+          })
+          .then(res => res.json())
+          .then(data => {
+            // 无论成功失败，都跳转到登录页
+            window.location.href = '/login.html';
+          })
+          .catch(error => {
+            window.location.href = '/login.html';
+          });
+        },
+        () => {
+          // 取消退出登录
+        }
+      );
+    };
+    
+    </script>
+  </body>
+</html>

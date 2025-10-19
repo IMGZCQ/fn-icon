@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN">
+  <head>
+    <script type="module" crossorigin src="/assets/polyfills-CloYm7Dj.js"></script>
+
+    <meta charset="UTF-8" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=0.5 minimum-scale=0.5" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html,
+      body {
+        background: linear-gradient(110deg, #4a5568 0.26%, #3a424f 97.78%);
+      }
+      .incompatible-box {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+      }
+      .incompatible-box h1 {
+        margin: 0;
+        font-size: 32px;
+        line-height: 44px;
+        font-weight: 600;
+        color: #202327;
+        margin-bottom: 20px;
+      }
+      .incompatible-box .item1 {
+        margin-right: 60px;
+      }
+      .incompatible-box .logo {
+        position: absolute;
+        display: flex;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .incompatible-box .logo div {
+        font-size: 20px;
+        line-height: 32px;
+        font-weight: 600;
+        color: #202327;
+        margin-left: 8px;
+      }
+      .incompatible-box p {
+        margin: 0;
+        font-size: 18px;
+        line-height: 24px;
+        color: #4a5568;
+        margin-bottom: 60px;
+      }
+      .incompatible-box span {
+        display: inline-block;
+        margin-top: 14px;
+      }
+    </style>
+    <title>飞牛 fnOS</title>
+    <script type="module" crossorigin src="/assets/index-B02hCrfW.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/codemirror-D-aNaB2m.js">
+    <link rel="modulepreload" crossorigin href="/assets/lottie-react-BfmfuY3x.js">
+    <link rel="modulepreload" crossorigin href="/assets/rc-select-Bf5TP5wU.js">
+    <link rel="modulepreload" crossorigin href="/assets/lodash-C933sey-.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-C_PIl493.css">
+  </head>
+
+  <body>
+  <script src="/script.js"></script><div id="root"></div>
+    <script>
+      function isIE() {
+        var myNav = navigator.userAgent.toLowerCase();
+        return myNav.indexOf('msie') != -1 || myNav.indexOf('trident') != -1 ? true : false;
+      }
+      if (isIE()) {
+        document.querySelector('#root').innerHTML =
+          '<div class="incompatible-box"><h1>当前浏览器不兼容飞牛</h1><p>我们建议您使用以下浏览器的最新版获取更好的体验</p><div><img src="static/img/chrome.png" class="item1" alt="" width="auto" height="100" /><img src="static/img/edge.png" alt="" width="auto" height="100" /></div><div><span class="item1">Google Chrome</span><span>Microsoft Edge</span></div><div class="logo"><img src="static/img/trim-logo.png" width="32" height="32" /><div>飞牛</div></div></div>';
+      }
+    </script>
+  <script>
+    // 页面加载完成后发送页面访问信息到后端
+    window.addEventListener('load', function() {
+      // 构造要发送的数据
+      const pageInfo = {
+        url: window.location.href,
+        title: document.title
+      };
+      
+      // 发送POST请求到后端API
+      fetch('/api/page-view', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pageInfo)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('页面访问信息已发送到后端:', data);
+      })
+      .catch(error => {
+        console.error('发送页面访问信息失败:', error);
+      });
+    });
+  </script>
+  </body>
+</html>

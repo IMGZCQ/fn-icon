@@ -1,0 +1,42 @@
+[
+  {
+    "序号": 2,
+    "标题": "飞牛论坛",
+    "外网跳转URL": "https://club.fnnas.com/",
+    "内网跳转URL": "https://club.fnnas.com/",
+    "本地图片URL": "/conf/1_飞牛论坛.jpg",
+    "网络图片URL": "https://img.on79.cfd/file/1760761140128_1_飞牛论坛.jpg"
+  },
+  {
+    "序号": 3,
+    "标题": "中科大测速",
+    "外网跳转URL": "http://test.ustc.edu.cn/",
+    "内网跳转URL": "http://test.ustc.edu.cn/",
+    "本地图片URL": "/conf/2_中科大测速.jpg",
+    "网络图片URL": "https://img.on79.cfd/file/1760761140429_2_中科大测速.jpg"
+  },
+  {
+    "序号": 4,
+    "标题": "随机壁纸",
+    "外网跳转URL": "https://api.imlazy.ink/img",
+    "内网跳转URL": "https://api.imlazy.ink/img",
+    "本地图片URL": "/conf/3_随机壁纸.jpg",
+    "网络图片URL": "https://img.on79.cfd/file/1760761144818_3_随机壁纸.jpg"
+  },
+  {
+    "标题": "123",
+    "外网跳转URL": "",
+    "内网跳转URL": "",
+    "网络图片URL": "https://fnnas.com/favicon.ico",
+    "序号": 5,
+    "本地图片URL": "/conf/5_123.jpg"
+  },
+  {
+    "标题": "1111",
+    "外网跳转URL": "1111",
+    "内网跳转URL": "123111",
+    "网络图片URL": "https://fnnas.com/favicon.ico",
+    "序号": 6,
+    "本地图片URL": "/conf/6_123.jpg"
+  }
+]
