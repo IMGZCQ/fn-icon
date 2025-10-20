@@ -13,7 +13,11 @@
 1. 修改后没生效可能是浏览器缓存导致，尝试清空浏览器缓存或者使用无痕模式浏览效果
 
 ### 更新日志
-- 2025.10.19 v0.37
+- 2025.10.20 v0.38
+  - 全新的UI样式
+  - 判断在系统启动完成后再添加图标，避免抢先启动导致失效
+    
+ - 2025.10.19 v0.37
   - 增加登录验证页面！
  
 - 2025.10.19 v0.36
@@ -45,6 +49,10 @@
     restart: always
 
 效果如图：
+<img width="1280" height="1400" alt="PixPin_2025-10-20_11-23-53" src="https://github.com/user-attachments/assets/8dfa5afc-2dc6-4a6a-9b8a-2b23a9fdd8aa" />
+<img width="728" height="849" alt="PixPin_2025-10-20_11-23-28" src="https://github.com/user-attachments/assets/61e912ad-33d2-46b0-a780-9f9cd4ce2d39" />
+<img width="693" height="939" alt="PixPin_2025-10-20_11-24-36" src="https://github.com/user-attachments/assets/cc3317c6-af66-4804-a6d7-0d78c6803e89" />
+
 <img width="1278" height="1399" alt="163950sthv38ptwa8voqi8" src="https://github.com/user-attachments/assets/04c04650-617c-4a23-bcd3-9a771736ec75" />
 ![Honeycam 2025-10-18 14-39-20](https://github.com/user-attachments/assets/ac52d99a-771f-41d5-a2fa-4fda997a1136)
 ![163937sw3000f0st0ajt44](https://github.com/user-attachments/assets/267e1dac-6f01-4e7f-b653-212779adb967)
