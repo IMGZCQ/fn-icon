@@ -686,19 +686,21 @@ app.use(async (ctx, next) => {
     }
 
     // 启动服务器
-    app.listen(PORT, () => {
-      console.log(`服务器运行在 http://localhost:${PORT}`);
-      console.log(`米恋泥飞牛图标工具 艰难启动成功！`);
-      console.log(`登录页面: http://localhost:${PORT}/login.html`);
-    });
+const port = process.env.PORT || 3000;
+// 2. 监听所有网络接口（0.0.0.0），而不是 localhost
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
+});
   } catch (error) {
     console.error('初始化过程中出错:', error);
     console.log('继续启动服务器...');
     
     // 即使初始化失败，也尝试启动服务器
-    app.listen(PORT, () => {
-      console.log(`服务器运行在 http://localhost:${PORT}`);
-      console.log(`米恋泥飞牛图标工具 艰难启动成功！`);
-    });
+const port = process.env.PORT || 3000;
+// 2. 监听所有网络接口（0.0.0.0），而不是 localhost
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
+});
   }
+
 })();
