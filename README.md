@@ -13,6 +13,9 @@
 1. 修改后没生效可能是浏览器缓存导致，尝试清空浏览器缓存或者使用无痕模式浏览效果
 
 ### 更新日志
+- 2025.10.21 v0.42
+  - 增加排序功能
+
 - 2025.10.20 v0.39
   - 支持从网址获取图标图片！
   - 样式微调
@@ -53,6 +56,7 @@
     restart: always
 
 效果如图：
+<img width="1146" height="1463" alt="image" src="https://github.com/user-attachments/assets/15467490-8c55-4cff-8602-27b7e848cdc0" />
 <img width="1280" height="1400" alt="PixPin_2025-10-20_11-23-53" src="https://github.com/user-attachments/assets/8dfa5afc-2dc6-4a6a-9b8a-2b23a9fdd8aa" />
 <img width="728" height="849" alt="PixPin_2025-10-20_11-23-28" src="https://github.com/user-attachments/assets/61e912ad-33d2-46b0-a780-9f9cd4ce2d39" />
 <img width="693" height="939" alt="PixPin_2025-10-20_11-24-36" src="https://github.com/user-attachments/assets/cc3317c6-af66-4804-a6d7-0d78c6803e89" />
