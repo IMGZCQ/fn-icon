@@ -256,16 +256,19 @@ th:nth-child(2), td:nth-child(2) { /* 标题列 */
   white-space: nowrap;
   color: #fcd34d;
   font-weight: 500;
+  font-size: 20px;
 }
 
 th:nth-child(3), td:nth-child(3) { /* 跳转链接列 */
   min-width: 220px;
 }
 
-th:nth-child(4), td:nth-child(4) { /* 预览列 */
-  width: 160px;
-  min-width: 160px;
-}
+th:nth-child(4), td:nth-child(4) { /* 预览列 - 刚好容纳两个图片 */
+    width: 50px;
+    min-width: 50px;
+    padding: 0;
+    text-align: center;
+  }
 
 th:nth-child(5), td:nth-child(5) { /* URL列 - 占满剩余空间 */
   min-width: 250px;
@@ -276,8 +279,8 @@ th:nth-child(5), td:nth-child(5) { /* URL列 - 占满剩余空间 */
 }
 
 th:nth-child(6), td:nth-child(6) { /* 操作列 */
-  width: 140px;
-  min-width: 140px;
+  width: 120px;
+  min-width: 100px;
   white-space: nowrap;
 }
 
@@ -534,7 +537,10 @@ button.secondary:hover {
 .small-btn {
   height: 24px;
   padding: 0 10px;
-  font-size: 14px;
+  font-size: 15px;
+  min-width: 32px; /* 保证按钮最小宽度 */
+  background-color: transparent !important;
+  border: 1px solid currentColor !important;
 }
 
 /* 表单行 */
@@ -615,17 +621,13 @@ button.secondary:hover {
 /* 操作区域样式 */
 .action-section {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin: 30px 0;
-  padding-right: 20px;
-  position: relative;
+  width: 100%;
+  padding: 0 5%; /* 添加内边距使边缘按钮不紧贴 */
 }
 
 .logout-btn {
-  position: absolute;
-  right: 20px;
   transform: none;
   background: #ff1493;
   color: white;
@@ -663,28 +665,11 @@ button.secondary:hover {
   box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
   text-transform: uppercase;
   letter-spacing: 1px;
-  position: relative;
-  overflow: hidden;
-}
-
-.apply-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.8s ease;
 }
 
 .apply-btn:hover {
   background: linear-gradient(135deg, #4169e1, #00ced1);
   box-shadow: 0 10px 25px rgba(124, 58, 237, 0.5);
-}
-
-.apply-btn:hover::before {
-  left: 100%;
 }
 
 .apply-btn:active {
@@ -727,7 +712,7 @@ button.secondary:hover {
 }
 
 .notification.success::before {
-  background: linear-gradient(to bottom, #64ffda, #10b981);
+  background: linear-gradient(to bottom, #64ffda, #11b981);
 }
 
 .notification.error {
@@ -883,6 +868,7 @@ button.secondary:hover {
   /* 调整列宽以适应中等屏幕 */
   th:nth-child(2), td:nth-child(2) { /* 标题列 */
     min-width: 160px;
+    font-size: 20px;
   }
   
   th:nth-child(3), td:nth-child(3) { /* 跳转链接列 */
@@ -912,7 +898,7 @@ button.secondary:hover {
   /* 响应式列宽调整 */
   th:nth-child(1), td:nth-child(1) { width: 60px; min-width: 60px; }
   th:nth-child(3), td:nth-child(3) { min-width: 180px; }
-  th:nth-child(4), td:nth-child(4) { width: 140px; min-width: 140px; }
+  th:nth-child(4), td:nth-child(4) { width: 50px; min-width: 50px; padding: 0; text-align: center; }
   th:nth-child(6), td:nth-child(6) { width: 120px; min-width: 120px; }
   
   .url-container {
@@ -1051,3 +1037,4 @@ button.secondary:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #7c3aed, #64ffda);
 }
+
