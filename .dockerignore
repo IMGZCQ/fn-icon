@@ -1,0 +1,6 @@
+node_modules/*      # 本地依赖，容器内会重新安装
+npm-debug.log      # npm错误日志
+.git/              # Git版本控制文件（如果有的话）
+.DS_Store          #  macOS系统文件（如果有的话）
+public/conf/*
+public/fnwww/*
