@@ -153,8 +153,204 @@ if (!existsSync(CONF_PATH)) {
 // 确保fnicon.json文件存在
 const FNICON_PATH = path.join(CONF_PATH, 'fnicon.json');
 
-// 下载图片函数
-const downloadImage = async (url, savePath) => {
+// 获取网页内容函数 - 支持302重定向并添加详细日志
+const fetchWebpageContent = async (url, redirectCount = 0) => {
+  // 限制最大重定向次数
+  if (redirectCount > 5) {
+    throw new Error('重定向次数过多');
+  }
+
+  return new Promise((resolve, reject) => {
+    const protocol = url.startsWith('https') ? https : http;
+    // 添加超时处理
+    const timeout = setTimeout(() => {
+      reject(new Error('请求超时'));
+    }, 10000); // 10秒超时
+    protocol.get(url, (response) => {
+      clearTimeout(timeout);
+      // 处理重定向
+      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+        const redirectUrl = response.headers.location.startsWith('http') 
+          ? response.headers.location 
+          : new URL(response.headers.location, url).href;
+                // 递归调用以跟随重定向
+        fetchWebpageContent(redirectUrl, redirectCount + 1)
+          .then(resolve)
+          .catch(reject);
+        return;
+      }
+      
+      if (response.statusCode !== 200) {
+        reject(new Error(`请求失败: ${response.statusCode}`));
+        return;
+      }
+      
+      let data = '';
+      response.on('data', (chunk) => {
+        data += chunk;
+      });
+      
+      response.on('end', () => {
+        resolve(data);
+      });
+    }).on('error', (err) => {
+      clearTimeout(timeout);
+      reject(err);
+    });
+  });
+};
+
+// 提取一级域名的辅助函数
+const getTopLevelDomain = (hostname) => {
+  const parts = hostname.split('.');
+  if (parts.length <= 2) {
+    return hostname; // 已经是一级域名或IP
+  }
+  // 对于包含多个子域名的情况，返回最后两个部分（一级域名和顶级域名）
+  return parts.slice(-2).join('.');
+};
+
+// 从网页中提取图片URL函数 - 添加详细日志
+const extractImageUrlFromWebpage = async (url) => {
+  try {
+    // 尝试直接访问域名下的favicon.ico
+    const urlObj = new URL(url);
+    const faviconUrl = `${urlObj.protocol}//${urlObj.hostname}/favicon.ico`;
+    
+    // 尝试访问favicon.ico - 支持重定向
+    try {
+      // 只检查响应状态，不下载完整内容
+      const faviconAccessible = await checkFaviconWithRedirect(faviconUrl);
+      if (faviconAccessible) {
+        return faviconUrl;
+      } else {
+        
+        // 添加步骤1.5: 尝试访问一级域名的favicon.ico
+        const topLevelDomain = getTopLevelDomain(urlObj.hostname);
+        if (topLevelDomain !== urlObj.hostname) { // 只有当一级域名不同于当前域名时才尝试
+          // 对于一级域名，保留原协议但不包含端口（一级域名通常不使用自定义端口）
+          const topLevelFaviconUrl = `${urlObj.protocol}//${topLevelDomain}/favicon.ico`;
+          
+          try {
+            const topLevelFaviconAccessible = await checkFaviconWithRedirect(topLevelFaviconUrl);
+            if (topLevelFaviconAccessible) {
+              return topLevelFaviconUrl;
+            } else {
+            }
+          } catch (topLevelError) {
+          }
+        } else {
+        }
+      }
+    } catch (faviconError) {
+      
+      // 即使出错，也尝试访问一级域名的favicon.ico
+      const topLevelDomain = getTopLevelDomain(urlObj.hostname);
+      if (topLevelDomain !== urlObj.hostname) {
+        // 对于一级域名，保留原协议但不包含端口
+        const topLevelFaviconUrl = `${urlObj.protocol}//${topLevelDomain}/favicon.ico`;
+        
+        try {
+          const topLevelFaviconAccessible = await checkFaviconWithRedirect(topLevelFaviconUrl);
+          if (topLevelFaviconAccessible) {
+            return topLevelFaviconUrl;
+          }
+        } catch (topLevelError) {
+        }
+      }
+    }
+    
+    // 如果favicon.ico不存在，尝试获取网页内容并提取第一个jpg或png图片
+    const htmlContent = await fetchWebpageContent(url);
+    
+    // 尝试从link标签中提取favicon
+    const faviconMatch = htmlContent.match(/<link[^>]*rel=["']icon["'][^>]*href=["']([^"']*)["'][^>]*>/i);
+    if (faviconMatch && faviconMatch[1]) {
+      let faviconPath = faviconMatch[1];
+      // 如果是相对路径，转换为绝对路径，保留端口
+      if (!faviconPath.startsWith('http')) {
+        // 使用host（包含端口）而不仅仅是hostname
+        const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
+        faviconPath = new URL(faviconPath, baseUrl).href;
+      }
+      return faviconPath;
+    } else {
+    }
+    
+    // 尝试提取第一个jpg或png图片
+    const imgMatch = htmlContent.match(/<img[^>]*src=["']([^"']*\.(jpg|png|ico))["'][^>]*>/i);
+    if (imgMatch && imgMatch[1]) {
+      let imgPath = imgMatch[1];
+      // 如果是相对路径，转换为绝对路径，保留端口
+      if (!imgPath.startsWith('http')) {
+        // 使用host（包含端口）而不仅仅是hostname
+        const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
+        imgPath = new URL(imgPath, baseUrl).href;
+      }
+      return imgPath;
+    } else {
+    }
+    
+    // 如果都没找到，返回null
+    return null;
+  } catch (error) {
+    console.error(`✗ 错误: 提取图片URL时出错 - ${error.message}`);
+    console.error(error.stack);
+    return null;
+  } finally {
+  }
+};
+
+// 检查favicon是否可访问 - 支持重定向并添加详细日志
+const checkFaviconWithRedirect = async (url, redirectCount = 0) => {
+  
+  if (redirectCount > 3) {
+    throw new Error('favicon重定向次数过多');
+  }
+  
+  return new Promise((resolve, reject) => {
+    const protocol = url.startsWith('https') ? https : http;
+    const timeout = setTimeout(() => {
+      reject(new Error('favicon请求超时'));
+    }, 5000);
+    
+    protocol.get(url, (response) => {
+      clearTimeout(timeout);
+      
+      // 处理重定向
+      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+        const redirectUrl = response.headers.location.startsWith('http') 
+          ? response.headers.location 
+          : new URL(response.headers.location, url).href;
+        
+        // 递归调用以跟随重定向
+        checkFaviconWithRedirect(redirectUrl, redirectCount + 1)
+          .then(resolve)
+          .catch(reject);
+        return;
+      }
+      
+      // 检查是否为有效的图片
+      const isImage = response.statusCode === 200 && response.headers['content-type']?.includes('image/');
+      if (isImage) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    }).on('error', (err) => {
+      clearTimeout(timeout);
+      resolve(false); // 返回false而不是reject，让流程继续尝试其他方法
+    });
+  });
+};
+
+// 下载图片函数 - 支持302重定向
+const downloadImage = async (url, savePath, redirectCount = 0) => {
+  // 限制最大重定向次数
+  if (redirectCount > 5) {
+    throw new Error('重定向次数过多');
+  }
+  
   return new Promise((resolve, reject) => {
     const protocol = url.startsWith('https') ? https : http;
     
@@ -165,6 +361,19 @@ const downloadImage = async (url, savePath) => {
     
     protocol.get(url, (response) => {
       clearTimeout(timeout);
+      
+      // 处理重定向
+      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+        const redirectUrl = response.headers.location.startsWith('http') 
+          ? response.headers.location 
+          : new URL(response.headers.location, url).href;
+      // 递归调用以跟随重定向
+        downloadImage(redirectUrl, savePath, redirectCount + 1)
+          .then(resolve)
+          .catch(reject);
+        return;
+      }
+      
       if (response.statusCode !== 200) {
         reject(new Error(`请求失败: ${response.statusCode}`));
         return;
@@ -234,7 +443,7 @@ if (!existsSync(FNICON_PATH)) {
       "外网跳转URL": "https://club.fnnas.com/",
       "内网跳转URL": "https://club.fnnas.com/",
       "本地图片URL": "",
-      "网络图片URL": "https://img.on79.cfd/file/1760761140128_1_飞牛论坛.jpg"
+      "网络图片URL": "https://help-static.fnnas.com/images/Margin-1.png"
     },
     {
       "序号": 2,
@@ -242,15 +451,47 @@ if (!existsSync(FNICON_PATH)) {
       "外网跳转URL": "http://test.ustc.edu.cn/",
       "内网跳转URL": "http://test.ustc.edu.cn/",
       "本地图片URL": "",
-      "网络图片URL": "https://img.on79.cfd/file/1760761140429_2_中科大测速.jpg"
+      "网络图片URL": "http://test.ustc.edu.cn/favicon.ico"
     },
     {
       "序号": 3,
+      "标题": "ImgURL图床",
+      "外网跳转URL": "https://www.imgurl.org",
+      "内网跳转URL": "https://www.imgurl.org",
+      "本地图片URL": "",
+      "网络图片URL": "https://www.imgurl.org/favicon.ico"
+    },
+    {
+      "序号": 4,
+      "标题": "IPIP Ping",
+      "外网跳转URL": "https://tools.ipip.net/newping.php",
+      "内网跳转URL": "https://tools.ipip.net/newping.php",
+      "本地图片URL": "",
+      "网络图片URL": "https://tools.ipip.net/favicon.ico"
+    },
+    {
+      "序号": 5,
+      "标题": "抖音",
+      "外网跳转URL": "https://www.douyin.com/",
+      "内网跳转URL": "https://www.douyin.com/",
+      "本地图片URL": "",
+      "网络图片URL": "https://pp.myapp.com/ma_icon/0/icon_42350811_1761048772/256"
+    },
+    {
+      "序号": 6,
+      "标题": "哔哩哔哩",
+      "外网跳转URL": "https://www.bilibili.com/",
+      "内网跳转URL": "https://www.bilibili.com/",
+      "本地图片URL": "",
+      "网络图片URL": "https://pp.myapp.com/ma_icon/0/icon_54221885_1755846090/256"
+    },
+    {
+      "序号": 7,
       "标题": "随机壁纸",
       "外网跳转URL": "https://api.imlazy.ink/img",
       "内网跳转URL": "https://api.imlazy.ink/img",
       "本地图片URL": "",
-      "网络图片URL": "https://img.on79.cfd/file/1760761144818_3_随机壁纸.jpg"
+      "网络图片URL": "https://pp.myapp.com/ma_icon/0/icon_54518091_1756196687/256"
     }
   ];
   // 创建默认文件
@@ -369,12 +610,50 @@ app.use(async (ctx, next) => {
   await next();
 });
 
+// 公告内容代理API - 解决CORS问题
+app.use(async (ctx, next) => {
+  if (ctx.path === '/api/announcement' && ctx.method === 'GET') {
+    try {
+      const url = 'https://sh.on79.cfd/cqfnicon.txt';
+      const protocol = url.startsWith('https') ? https : http;
+      
+      // 设置响应头，允许跨域
+      ctx.set('Access-Control-Allow-Origin', '*');
+      ctx.set('Access-Control-Allow-Methods', 'GET');
+      
+      // 使用Node.js的http/https模块获取远程内容
+      const response = await new Promise((resolve, reject) => {
+        protocol.get(url, (res) => {
+          let data = '';
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
+          res.on('end', () => {
+            resolve(data);
+          });
+        }).on('error', (error) => {
+          reject(error);
+        });
+      });
+      
+      ctx.body = response;
+      ctx.type = 'text/plain';
+    } catch (error) {
+      console.error('获取公告内容失败:', error);
+      ctx.status = 500;
+      ctx.body = '获取公告内容失败';
+    }
+    return;
+  }
+  await next();
+});
+
 // 读取JSON文件
 const readJsonFile = async (filename) => {
   const filePath = path.join(CONF_PATH, filename);
   try {
     if (!existsSync(filePath)) {
-      return { success: false, message: '文件不存在' };
+      return { success: false, message: '文件不存1在' };
     }
     const data = await fsPromises.readFile(filePath, 'utf8');
     return { success: true, data: JSON.parse(data) };
@@ -409,11 +688,71 @@ app.use(async (ctx, next) => {
   await next();
 });
 
+// 重新排序记录 - 放置在所有/api/files/*路由之前，确保优先处理
+app.use(async (ctx, next) => {
+  // 检查是否是reorder请求
+  if (ctx.path.includes('/reorder') && ctx.method === 'POST') {
+    try {
+/*       console.log('Reorder API - Request received:', ctx.path);
+ */      
+      // 直接使用硬编码文件名以确保正确
+      const filename = 'fnicon.json';
+/*       console.log('Reorder API - Using filename:', filename);
+      console.log('Reorder API - CONF_PATH:', CONF_PATH);
+ */      
+      // 构建完整文件路径
+      const filePath = path.join(CONF_PATH, filename);
+/*       console.log('Reorder API - Full file path:', filePath);
+ */      
+      // 检查文件是否存在
+      if (!existsSync(filePath)) {
+/*         console.error('CRITICAL: File does not exist:', filePath);
+ */        ctx.body = { success: false, message: '配置文件不存在: ' + filePath };
+        return;
+      }
+      
+      // 获取请求体数据
+      const requestBody = ctx.request.body;
+/*       console.log('Reorder API - Received data length:', requestBody ? requestBody.length : 'no data');
+ */      
+      // 排序数据
+      const sortedData = Array.isArray(requestBody) 
+        ? [...requestBody].sort((a, b) => (a.序号 || 0) - (b.序号 || 0))
+        : [];
+      
+      // 保存排序后的数据
+      await fsPromises.writeFile(filePath, JSON.stringify(sortedData, null, 2));
+/*       console.log('Reorder API - Successfully saved data to:', filePath);
+ */      
+      ctx.body = { success: true, message: '排序更新成功' };
+    } catch (error) {
+/*       console.error('Reorder API - Error:', error);
+ */      ctx.body = { success: false, message: '排序更新失败: ' + error.message };
+    }
+    return; // 处理完后直接返回，不继续next()
+  }
+  
+  // 不是reorder请求，继续处理其他路由
+  await next();
+});
+
 // 获取指定文件内容
 app.use(async (ctx, next) => {
   if (ctx.path.startsWith('/api/files/') && ctx.method === 'GET') {
     const filename = ctx.path.split('/api/files/')[1];
-    ctx.body = await readJsonFile(filename);
+    const result = await readJsonFile(filename);
+    
+    // 如果读取成功且数据是数组，按照序号排序
+    if (result.success && Array.isArray(result.data)) {
+      // 对数据按照序号进行排序，处理序号可能不存在或不是数字的情况
+      result.data = [...result.data].sort((a, b) => {
+        const numA = typeof a.序号 === 'number' ? a.序号 : 0;
+        const numB = typeof b.序号 === 'number' ? b.序号 : 0;
+        return numA - numB;
+      });
+    }
+    
+    ctx.body = result;
     return;
   }
   await next();
@@ -426,21 +765,59 @@ app.use(async (ctx, next) => {
   if (ctx.path.startsWith('/api/files/') && ctx.method === 'POST') {
     const filename = ctx.path.split('/api/files/')[1];
     const { data: currentData } = await readJsonFile(filename);
-    
+    const newRecord = ctx.request.body; 
     if (!currentData) {
       ctx.body = { success: false, message: '文件不存在' };
       return;
     }
     
-    const newRecord = ctx.request.body;
-    // 自动生成序号
-    newRecord.序号 = currentData.length > 0 
-      ? Math.max(...currentData.map(item => item.序号)) + 1 
-      : 1;
+    // 自动生成序号 - 优先填补空缺的序号
+    if (currentData.length === 0) {
+      newRecord.序号 = 1;
+    } else {
+      // 获取所有现有序号并排序，过滤出有效的数字序号
+      const existingNumbers = currentData
+        .map(item => item.序号)
+        .filter(num => typeof num === 'number' && !isNaN(num) && num > 0)
+        .sort((a, b) => a - b);
+      
+      // 如果没有有效的序号，从1开始
+      if (existingNumbers.length === 0) {
+        newRecord.序号 = 1;
+      } else {
+        // 寻找最小的空缺序号
+        let minAvailableNumber = 1;
+        for (const num of existingNumbers) {
+          if (num > minAvailableNumber) {
+            // 找到空缺
+            break;
+          }
+          minAvailableNumber = num + 1;
+        }
+        
+        newRecord.序号 = minAvailableNumber;
+      }
+    }
     
-    // 处理网络图片URL，如果为空则使用默认图标
-    if (!newRecord['网络图片URL']) {
-      newRecord['网络图片URL'] = 'https://fnnas.com/favicon.ico';
+    
+    // 处理网络图片URL，如果为空则尝试从外网跳转URL获取图片
+    if (!newRecord['网络图片URL'] && newRecord['外网跳转URL']) {
+      try {
+        const extractedImageUrl = await extractImageUrlFromWebpage(newRecord['外网跳转URL']);
+        if (extractedImageUrl) {
+          newRecord['网络图片URL'] = extractedImageUrl;
+        } else {
+          // 如果无法提取图片，使用默认图标
+          newRecord['网络图片URL'] = 'https://help-static.fnnas.com/images/Margin-1.png';
+        }
+      } catch (error) {
+        // 出错时使用默认图标
+        newRecord['网络图片URL'] = 'https://help-static.fnnas.com/images/Margin-1.png';
+      }
+    } else if (!newRecord['网络图片URL']) {
+      // 如果没有外网跳转URL，直接使用默认图标
+      newRecord['网络图片URL'] = 'https://help-static.fnnas.com/images/Margin-1.png';
+    } else {
     }
     
     // 处理网络图片下载
@@ -449,12 +826,14 @@ app.use(async (ctx, next) => {
       const imgPath = path.join(CONF_PATH, imgName);
       await downloadImage(newRecord['网络图片URL'], imgPath);
     } catch (error) {
-      console.error('下载图片失败:', error);
       // 图片下载失败不影响记录添加，只记录错误
     }
     newRecord['本地图片URL'] = `/conf/${newRecord.序号}_${newRecord.标题.replace(/[^\w\u4e00-\u9fa5]/g, '_')}.jpg`;
+    
     currentData.push(newRecord);
-    ctx.body = await writeJsonFile(filename, currentData);
+    
+    const writeResult = await writeJsonFile(filename, currentData);  
+    ctx.body = writeResult;
     return;
   }
   await next();
@@ -465,7 +844,7 @@ app.use(async (ctx, next) => {
   if (ctx.path.startsWith('/api/files/') && ctx.method === 'PUT') {
     const [filename, id] = ctx.path.split('/api/files/')[1].split('/');
     const { data: currentData } = await readJsonFile(filename);
-    
+    const requestBody = ctx.request.body;
     if (!currentData) {
       ctx.body = { success: false, message: '文件不存在' };
       return;
@@ -476,27 +855,45 @@ app.use(async (ctx, next) => {
       ctx.body = { success: false, message: '记录不存在' };
       return;
     }
-    
-    const updatedRecord = { ...currentData[index], ...ctx.request.body };
-    
-    // 如果更新了网络图片URL或网络图片URL为空，设置默认图标并重新下载
-    if (!updatedRecord['网络图片URL']) {
-      updatedRecord['网络图片URL'] = 'https://fnnas.com/favicon.ico';
+    const oldRecord = currentData[index];  
+    const updatedRecord = { ...oldRecord, ...requestBody };
+    // 如果更新了网络图片URL或网络图片URL为空，尝试从外网跳转URL获取图片
+    const shouldUpdateImage = !updatedRecord['网络图片URL'] || 
+                            (oldRecord['外网跳转URL'] !== updatedRecord['外网跳转URL']);
+        
+    if (shouldUpdateImage && updatedRecord['外网跳转URL']) {
+      try {
+        const extractedImageUrl = await extractImageUrlFromWebpage(updatedRecord['外网跳转URL']);
+        if (extractedImageUrl) {
+          updatedRecord['网络图片URL'] = extractedImageUrl;
+        } else {
+          // 如果无法提取图片，使用默认图标
+          updatedRecord['网络图片URL'] = 'https://help-static.fnnas.com/images/Margin-1.png';
+        }
+      } catch (error) {
+        // 出错时使用默认图标
+        updatedRecord['网络图片URL'] = 'https://help-static.fnnas.com/images/Margin-1.png';
+      }
+    } else if (!updatedRecord['网络图片URL']) {
+      // 如果没有外网跳转URL，直接使用默认图标
+      updatedRecord['网络图片URL'] = 'https://help-static.fnnas.com/images/Margin-1.png';
     }
     
-    if (updatedRecord['网络图片URL'] !== currentData[index]['网络图片URL']) {
+    if (updatedRecord['网络图片URL'] !== oldRecord['网络图片URL']) {
       try {
         const imgName = `${updatedRecord.序号}_${updatedRecord.标题.replace(/[^\w\u4e00-\u9fa5]/g, '_')}.jpg`;
         const imgPath = path.join(CONF_PATH, imgName);
         await downloadImage(updatedRecord['网络图片URL'], imgPath);
         updatedRecord['本地图片URL'] = `/conf/${imgName}`;
       } catch (error) {
-        console.error('下载图片失败:', error);
       }
+    } else {
     }
     
     currentData[index] = updatedRecord;
-    ctx.body = await writeJsonFile(filename, currentData);
+    
+    const writeResult = await writeJsonFile(filename, currentData);
+    ctx.body = writeResult;
     return;
   }
   await next();
@@ -527,10 +924,8 @@ app.use(async (ctx, next) => {
         try {
           if (existsSync(imagePath)) {
             await fsPromises.unlink(imagePath);
-            console.log(`已删除本地图片文件: ${imagePath}`);
           }
         } catch (error) {
-          console.error(`删除本地图片文件失败: ${error.message}`);
           // 继续删除记录，不因图片删除失败而中断
         }
       }
@@ -651,18 +1046,26 @@ app.use(async (ctx, next) => {
     console.log('等待图片下载完成...');
     await initializeImages();
     
-/*     // 检查public/fnwww/favicon.ico文件是否存在，等待该文件存在后才继续执行
+    // 检查public/fnwww/favicon.ico文件是否存在，等待该文件存在后才继续执行
     const faviconPath = path.join(__dirname, 'public', 'fnwww', 'favicon.ico');
     console.log('等待系统启动中。。。');
-    await new Promise((resolve) => {
+    let checkCount = 0;
+    const maxChecks = 5;
+    await new Promise((resolve, reject) => {
       const checkInterval = setInterval(() => {
+        checkCount++;
+        console.log(`第${checkCount}次评估系统状态...`);
         if (fs.existsSync(faviconPath)) {
           console.log('时机成熟，继续执行...');
           clearInterval(checkInterval);
           resolve();
+        } else if (checkCount >= maxChecks) {
+          console.log(`超过${maxChecks}次评估系统状态失败，先程序退出。`);
+          clearInterval(checkInterval);
+          process.exit(1);
         }
       }, 1000); // 每秒检查一次
-    }); */
+    });
     
     console.log('图片初始化完成，开始应用设置...');
     await applySettingsToHtml();
@@ -686,21 +1089,18 @@ app.use(async (ctx, next) => {
     }
 
     // 启动服务器
-const port = process.env.PORT || 3000;
-// 2. 监听所有网络接口（0.0.0.0），而不是 localhost
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
-});
+    app.listen(PORT, () => {
+      console.log(`服务器运行在 http://localhost:${PORT}`);
+      console.log(`米恋泥飞牛图标工具 艰难启动成功！`);
+    });
   } catch (error) {
     console.error('初始化过程中出错:', error);
     console.log('继续启动服务器...');
     
     // 即使初始化失败，也尝试启动服务器
-const port = process.env.PORT || 3000;
-// 2. 监听所有网络接口（0.0.0.0），而不是 localhost
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
-});
+    app.listen(PORT, () => {
+      console.log(`服务器运行在 http://localhost:${PORT}`);
+      console.log(`米恋泥飞牛图标工具 艰难启动成功！`);
+    });
   }
-
 })();
