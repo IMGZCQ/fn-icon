@@ -1062,7 +1062,7 @@ app.use(async (ctx, next) => {
         } else if (checkCount >= maxChecks) {
           console.log(`超过${maxChecks}次评估系统状态失败，先程序退出。`);
           clearInterval(checkInterval);
-          process.exit(1);
+          // process.exit(1);
         }
       }, 1000); // 每秒检查一次
     });
@@ -1103,4 +1103,5 @@ app.use(async (ctx, next) => {
       console.log(`米恋泥飞牛图标工具 艰难启动成功！`);
     });
   }
+
 })();
