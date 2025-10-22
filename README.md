@@ -62,6 +62,7 @@
     restart: always
 
 效果如图：
+<img width="608" height="1279" alt="PixPin_2025-10-23_00-35-18" src="https://github.com/user-attachments/assets/13fdbc8c-51ab-48e8-9ff7-fa36d8913464" />
 ![屏幕截图_22-10-2025_15247_192 168 20 21](https://github.com/user-attachments/assets/d8092cf9-d76f-4b5d-a400-65a4faa88ec8)
 <img width="282" height="462" alt="PixPin_2025-10-22_14-58-50" src="https://github.com/user-attachments/assets/d3ea2fbe-3e35-499d-af00-52566fe01483" />
 <img width="1146" height="1463" alt="image" src="https://github.com/user-attachments/assets/15467490-8c55-4cff-8602-27b7e848cdc0" />
