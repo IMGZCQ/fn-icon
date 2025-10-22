@@ -11,6 +11,9 @@
 1. 修改后没生效可能是浏览器缓存导致，尝试清空浏览器缓存或者使用无痕模式浏览效果
 
 ### 更新日志
+- 2025.10.23 v0.52
+  - 适配移动端（支持拖拽排序）
+
 - 2025.10.22 v0.50
   - 换成更为先进的拖拽排序！
 
@@ -59,6 +62,7 @@
     restart: always
 
 效果如图：
+![屏幕截图_22-10-2025_15247_192 168 20 21](https://github.com/user-attachments/assets/d8092cf9-d76f-4b5d-a400-65a4faa88ec8)
 <img width="282" height="462" alt="PixPin_2025-10-22_14-58-50" src="https://github.com/user-attachments/assets/d3ea2fbe-3e35-499d-af00-52566fe01483" />
 <img width="1146" height="1463" alt="image" src="https://github.com/user-attachments/assets/15467490-8c55-4cff-8602-27b7e848cdc0" />
 <img width="1280" height="1400" alt="PixPin_2025-10-20_11-23-53" src="https://github.com/user-attachments/assets/8dfa5afc-2dc6-4a6a-9b8a-2b23a9fdd8aa" />
