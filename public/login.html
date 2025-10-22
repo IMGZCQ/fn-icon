@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>飞牛图标管理工具</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>飞牛图标管理工具 - 登录</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <style>
-        /* 赛博朋克全局样式重置 */
+        /* 全局样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        /* 赛博朋克背景和动画 */
+        /* 深蓝色科技感基础样式 */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: #0a0a0a;
-            color: #fff;
-            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+            background: #050b1a;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             overflow: hidden;
             position: relative;
         }
         
-        /* 霓虹网格背景 */
+        /* 多彩渐变动态背景 */
         body::before {
             content: '';
             position: absolute;
@@ -34,16 +35,39 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
-                linear-gradient(rgba(255, 0, 140, 0.2) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.2) 1px, transparent 1px);
-            background-size: 30px 30px;
+            background: linear-gradient(80deg, 
+               rgba(0, 2, 119, 0.521) 60%,   /* 青色 */
+               rgba(63, 0, 145, 0.61) 80%,  /* 蓝绿色 */
+                rgba(92, 0, 72, 0.651) 100%  /* 回到品红 */
+               rgba(0, 2, 119, 0.521) 60%,   /* 青色 */
+               rgba(63, 0, 145, 0.61) 80%,  /* 蓝绿色 */
+                rgba(92, 0, 72, 0.651) 100%  /* 回到品红 */
+            );
+            background-size: 300% 300%;
             z-index: 0;
-            animation: gridMove 15s linear infinite;
-            opacity: 0.6;
+            animation: gradientFlow 20s ease infinite;
         }
         
-        /* 动态噪点背景 */
+        /* 背景渐变动画 - 更平滑的过渡 */
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 25% 50%;
+            }
+            50% {
+                background-position: 50% 50%;
+            }
+            75% {
+                background-position: 75% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+        
+        /* 彩色光效层 */
         body::after {
             content: '';
             position: absolute;
@@ -51,308 +75,217 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
+            background: 
+                radial-gradient(circle at top right, rgba(236, 72, 153, 0.3) 0%, transparent 60%),
+                radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.3) 0%, transparent 60%),
+                radial-gradient(circle at top left, rgba(147, 51, 234, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.2) 0%, transparent 50%);
+            background-size: 200% 200%;
             z-index: 0;
-            pointer-events: none;
+            animation: colorGlow 15s ease-in-out infinite alternate;
         }
         
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 60px 60px; }
-        }
-        
-        /* 霓虹光线效果 */
-        .neon-line {
-            position: absolute;
-            z-index: 0;
-        }
-        
-        .neon-line:nth-child(1) {
-            top: 10%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #ff008c, transparent);
-            animation: neonPulse 3s infinite alternate;
-        }
-        
-        .neon-line:nth-child(2) {
-            top: 90%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #00ffff, transparent);
-            animation: neonPulse 4s infinite alternate;
-        }
-        
-        .neon-line:nth-child(3) {
-            top: 0;
-            left: 10%;
-            width: 1px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, #00ffff, transparent);
-            animation: neonPulse 5s infinite alternate;
-        }
-        
-        .neon-line:nth-child(4) {
-            top: 0;
-            left: 90%;
-            width: 1px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, #ff008c, transparent);
-            animation: neonPulse 6s infinite alternate;
-        }
-        
-        @keyframes neonPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-        
-        /* 故障粒子效果 */
-        .glitch-particle {
-            position: absolute;
-            background: #00ffff;
-            opacity: 0.7;
-            pointer-events: none;
-            animation: glitchMove 10s infinite linear;
-        }
-        
-        @keyframes glitchMove {
+        /* 彩色光效动画 */
+        @keyframes colorGlow {
             0% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 0;
+                background-position: 0% 0%;
+                opacity: 0.2;
             }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
+            50% {
+                background-position: 50% 50%;
+                opacity: 0.4;
+            }
             100% {
-                transform: translate(300px, -300px) rotate(720deg);
-                opacity: 0;
+                background-position: 100% 100%;
+                opacity: 0.3;
             }
         }
         
-        /* 故障文字效果 */
-        .glitch-text {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
+        /* 粒子容器 */
+        #particles {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
         
-        .glitch-text::before {
-            left: 2px;
-            text-shadow: -2px 0 #ff008c;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 3s infinite linear alternate-reverse;
+        /* 粒子样式 - 彩色 */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat linear infinite;
         }
         
-        .glitch-text::after {
-            left: -2px;
-            text-shadow: -2px 0 #00ffff;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+        /* 不同颜色的粒子 */
+        .particle.pink {
+            background: linear-gradient(45deg, rgba(236, 72, 153, 0.9), rgba(244, 114, 182, 0.9));
+            box-shadow: 0 0 10px rgba(236, 72, 153, 0.8), 0 0 20px rgba(244, 114, 182, 0.5);
         }
         
-        @keyframes glitch-anim {
-            0% { clip: rect(34px, 9999px, 90px, 0); }
-            10% { clip: rect(78px, 9999px, 32px, 0); }
-            20% { clip: rect(45px, 9999px, 63px, 0); }
-            30% { clip: rect(56px, 9999px, 12px, 0); }
-            40% { clip: rect(24px, 9999px, 89px, 0); }
-            50% { clip: rect(85px, 9999px, 62px, 0); }
-            60% { clip: rect(42px, 9999px, 93px, 0); }
-            70% { clip: rect(13px, 9999px, 57px, 0); }
-            80% { clip: rect(65px, 9999px, 28px, 0); }
-            90% { clip: rect(97px, 9999px, 1px, 0); }
-            100% { clip: rect(47px, 9999px, 36px, 0); }
+        .particle.purple {
+            background: linear-gradient(45deg, rgba(147, 51, 234, 0.9), rgba(168, 85, 247, 0.9));
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.8), 0 0 20px rgba(168, 85, 247, 0.5);
         }
         
-        @keyframes glitch-anim2 {
-            0% { clip: rect(98px, 9999px, 26px, 0); }
-            10% { clip: rect(12px, 9999px, 81px, 0); }
-            20% { clip: rect(73px, 9999px, 47px, 0); }
-            30% { clip: rect(61px, 9999px, 34px, 0); }
-            40% { clip: rect(39px, 9999px, 96px, 0); }
-            50% { clip: rect(53px, 9999px, 22px, 0); }
-            60% { clip: rect(17px, 9999px, 74px, 0); }
-            70% { clip: rect(86px, 9999px, 51px, 0); }
-            80% { clip: rect(41px, 9999px, 88px, 0); }
-            90% { clip: rect(29px, 9999px, 67px, 0); }
-            100% { clip: rect(92px, 9999px, 8px, 0); }
+        .particle.blue {
+            background: linear-gradient(45deg, rgba(59, 130, 246, 0.9), rgba(96, 165, 250, 0.9));
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(96, 165, 250, 0.5);
         }
         
-        /* 赛博朋克容器样式 */
+        .particle.cyan {
+            background: linear-gradient(45deg, rgba(6, 182, 212, 0.9), rgba(8, 145, 178, 0.9));
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.8), 0 0 20px rgba(8, 145, 178, 0.5);
+        }
+        
+        .particle.teal {
+            background: linear-gradient(45deg, rgba(20, 184, 166, 0.9), rgba(45, 212, 191, 0.9));
+            box-shadow: 0 0 10px rgba(20, 184, 166, 0.8), 0 0 20px rgba(45, 212, 191, 0.5);
+        }
+        
+        /* 粒子浮动动画 */
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translate(0, 0) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--translateX), var(--translateY)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        /* 登录容器样式 */
         .login-container {
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid #ff008c;
+            background: rgba(16, 24, 47, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 8px;
             padding: 40px;
             width: 400px;
             max-width: 90%;
-            box-shadow: 
-                0 0 15px rgba(255, 0, 140, 0.5),
-                0 0 30px rgba(0, 255, 255, 0.3),
-                inset 0 0 20px rgba(0, 0, 0, 0.8);
             position: relative;
-            overflow: hidden;
             z-index: 1;
+            backdrop-filter: blur(1px);
+            /* 边框炫光效果 */
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(59, 130, 246, 0.4),
+                inset 0 0 0 1px rgba(59, 130, 246, 0.1);
+            animation: borderGlow 3s ease-in-out infinite alternate;
         }
         
-        /* 赛博朋克容器边框动画 */
+        /* 边框炫光动画 */
+        @keyframes borderGlow {
+            0% {
+                box-shadow: 
+                    0 4px 6px rgba(0, 0, 0, 0.3),
+                    0 0 20px rgba(59, 130, 246, 0.3),
+                    inset 0 0 0 1px rgba(59, 130, 246, 0.1);
+            }
+            100% {
+                box-shadow: 
+                    0 4px 6px rgba(0, 0, 0, 0.3),
+                    0 0 40px rgba(59, 130, 246, 0.6),
+                    inset 0 0 0 1px rgba(59, 130, 246, 0.3);
+            }
+        }
+        
+        /* 容器边框高亮效果 */
         .login-container::before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: -1px;
-            right: -1px;
-            bottom: -1px;
-            background: linear-gradient(45deg, #ff008c, #00ffff, #ff008c, #00ffff);
-            border-radius: 9px;
-            z-index: -1;
-            animation: borderGlitch 8s linear infinite;
-            background-size: 400%;
-            opacity: 0.8;
-        }
-        
-        @keyframes borderGlitch {
-            0% { background-position: 0 0; }
-            50% { background-position: 400% 0; }
-            100% { background-position: 0 0; }
-        }
-        
-        /* 容器内部装饰线 */
-        .login-container::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            right: 0;
             height: 3px;
-            background: linear-gradient(90deg, transparent, #00ffff, transparent);
-            animation: scanLine 3s linear infinite;
+            background: linear-gradient(90deg, transparent, #3b82f6, #60a5fa, transparent);
+            border-radius: 8px 8px 0 0;
+            z-index: 2;
+            animation: linePulse 2s ease-in-out infinite;
         }
         
-        @keyframes scanLine {
-            0% { transform: translateY(-10px); }
-            100% { transform: translateY(100px); }
+        @keyframes linePulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
         
         /* 标题样式 */
         .login-title {
             text-align: center;
-            margin-bottom: 35px;
-            color: #ffffff;
-            font-size: 28px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 
-                0 0 5px #ff008c,
-                0 0 10px #ff008c,
-                0 0 20px #ff008c;
-            position: relative;
-        }
-        
-        .login-title::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00ffff, transparent);
-            margin: 15px auto 0;
-            animation: linePulse 2s infinite alternate;
-        }
-        
-        @keyframes linePulse {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
+            margin-bottom: 30px;
+            color: #e2e8f0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
         
         /* 表单组样式 */
         .form-group {
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             position: relative;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 10px;
-            color: #00ffff;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px #00ffff;
+            margin-bottom: 8px;
+            color: #93c5fd;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
         }
         
         /* 输入框样式 */
         .form-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ff008c;
+            padding: 12px 16px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: 4px;
-            background: rgba(10, 10, 10, 0.7);
-            color: #ffffff;
-            font-size: 16px;
-            font-family: 'Rajdhani', sans-serif;
+            background: rgba(30, 41, 59, 0.5);
+            color: #e2e8f0;
+            font-size: 15px;
+            font-weight: 400;
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            letter-spacing: 1px;
+            outline: none;
         }
         
         .form-group input:focus {
-            outline: none;
-            border-color: #00ffff;
-            background: rgba(0, 255, 255, 0.05);
-            box-shadow: 
-                0 0 10px rgba(0, 255, 255, 0.5),
-                0 0 20px rgba(0, 255, 255, 0.3);
-            transform: translateX(5px);
+            border-color: #3b82f6;
+            background: rgba(30, 41, 59, 0.7);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3), 0 0 15px rgba(59, 130, 246, 0.2);
         }
         
-        /* 输入框前缀符号 */
-        .form-group::before {
-            content: '>';
-            position: absolute;
-            left: -15px;
-            top: 35px;
-            color: #ff008c;
-            font-size: 18px;
-            text-shadow: 0 0 5px #ff008c;
-            animation: blink 1s infinite;
+        .form-group input::placeholder {
+            color: #718096;
         }
         
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-        
-        /* 赛博朋克按钮样式 */
+        /* 提交按钮样式 */
         .btn-submit {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(90deg, #ff008c, #ff6eaa);
-            border: 2px solid #ff008c;
-            border-radius: 4px;
-            color: #0a0a0a;
+            padding: 12px 20px;
+            background: linear-gradient(90deg, #1fb2cc93, #2c76ff81);
+            border: 1px solid #3b82f6;
+            border-radius: 0px;
+            color: #ffffff;
             font-size: 16px;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            box-shadow: 0 0 15px rgba(255, 0, 140, 0.5);
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
         }
         
         .btn-submit::before {
@@ -362,17 +295,15 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: all 0.5s ease;
         }
         
         .btn-submit:hover {
-            background: linear-gradient(90deg, #00ffff, #66ffff);
-            border-color: #00ffff;
-            transform: translateY(-2px);
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.7),
-                0 0 40px rgba(0, 255, 255, 0.5);
+            background: linear-gradient(90deg, #008cff, #60c1fa);
+            border-color: #60a5fa;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+            transform: translateY(-1px);
         }
         
         .btn-submit:hover::before {
@@ -380,28 +311,24 @@
         }
         
         .btn-submit:active {
-            transform: translateY(0);
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            transform: translateY(1px);
         }
         
-        /* 赛博朋克消息提示样式 */
+        /* 消息提示样式 */
         .message {
             text-align: center;
-            margin-top: 25px;
-            padding: 15px;
+            margin-top: 20px;
+            padding: 12px;
             border-radius: 4px;
             font-size: 14px;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
+            font-weight: 400;
             transition: all 0.3s ease;
             opacity: 0;
-            transform: translateY(10px);
-            animation: slideIn 0.3s forwards;
-            position: relative;
-            overflow: hidden;
+            transform: translateY(8px);
+            animation: fadeIn 0.3s forwards;
         }
         
-        @keyframes slideIn {
+        @keyframes fadeIn {
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -409,94 +336,107 @@
         }
         
         .message.error {
-            background: rgba(255, 0, 140, 0.1);
-            border: 1px solid #ff008c;
-            color: #ff8cbf;
-            box-shadow: 0 0 15px rgba(255, 0, 140, 0.3);
-        }
-        
-        .message.error::before {
-            content: '[ERROR] ';
-            color: #ff008c;
-            font-weight: bold;
+            background: rgba(229, 62, 62, 0.1);
+            border: 1px solid rgba(229, 62, 62, 0.3);
+            color: #fc8181;
         }
         
         .message.success {
-            background: rgba(0, 255, 255, 0.1);
-            border: 1px solid #00ffff;
-            color: #8cffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            background: rgba(45, 156, 219, 0.1);
+            border: 1px solid rgba(45, 156, 219, 0.3);
+            color: #63b3ed;
         }
         
-        .message.success::before {
-            content: '[SUCCESS] ';
-            color: #00ffff;
-            font-weight: bold;
-        }
-        
-        /* 技术指标信息 */
+        /* 页脚技术信息 */
         .tech-info {
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 11px;
-            color: rgba(0, 255, 255, 0.6);
-            letter-spacing: 1px;
+            color: #718096;
+            letter-spacing: 0.5px;
             text-align: center;
-            font-family: 'Orbitron', sans-serif;
             z-index: 0;
-            opacity: 0.6;
+            opacity: 0.8;
         }
         
         .tech-info span {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
         
         /* 响应式设计 */
         @media (max-width: 480px) {
             .login-container {
-                padding: 30px 20px;
-                border-width: 1px;
+                padding: 30px 24px;
+                margin: 20px;
             }
             
             .login-title {
-                font-size: 24px;
-                letter-spacing: 2px;
+                font-size: 20px;
+                margin-bottom: 24px;
             }
             
-            .form-group label {
-                letter-spacing: 1px;
+            .form-group {
+                margin-bottom: 20px;
             }
             
+            .form-group input,
             .btn-submit {
-                letter-spacing: 2px;
-                padding: 12px;
+                padding: 14px;
+                font-size: 16px;
+            }
+            
+            .tech-info {
+                font-size: 10px;
+                bottom: 15px;
             }
         }
+        
+        /* 科技感线条装饰 */
+        .tech-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+            opacity: 0.3;
+            z-index: 0;
+            animation: lineFlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes lineFlow {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.4; }
+        }
+        
+        .tech-line:nth-child(1) {
+            top: 20%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
+        
+        .tech-line:nth-child(2) {
+            bottom: 20%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
     </style>
-    <!-- 引入赛博朋克风格字体 -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- 霓虹光线 -->
-    <div class="neon-line"></div>
-    <div class="neon-line"></div>
-    <div class="neon-line"></div>
-    <div class="neon-line"></div>
+    <!-- 粒子容器 -->
+    <div id="particles"></div>
     
-    <!-- 故障粒子容器 -->
-    <div id="glitch-particles"></div>
+    <!-- 技术线条装饰 -->
+    <div class="tech-line"></div>
+    <div class="tech-line"></div>
     
     <div class="login-container">
-        <h2 id="page-title" class="login-title">
-            <span class="glitch-text" data-text="飞牛图标管理工具">飞牛图标管理工具</span>
-        </h2>
+        <h2 id="page-title" class="login-title">飞牛图标管理工具</h2>
         <form id="auth-form" method="post">
             <div class="form-group">
-                <label for="password">登录密码</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password">登录密码:</label>
+                <input type="password" id="password" name="password" required placeholder="请输入密码" autofocus>
             </div>
             <button type="submit" id="submit-btn" class="btn-submit">接入系统</button>
         </form>
@@ -511,40 +451,68 @@
     </div>
 
     <script>
-        // 生成故障粒子背景
-        function createGlitchParticles() {
-            const container = document.getElementById('glitch-particles');
-            const particleCount = 15;
+        // 页面加载完成后自动聚焦密码输入框
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) {
+                passwordInput.focus();
+                // 确保光标在输入框末尾
+                passwordInput.setSelectionRange(passwordInput.value.length, passwordInput.value.length);
+            }
+        });
+        
+        // 创建粒子效果 - 增加数量和彩色
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 200; // 大幅增加粒子数量以提高密度
+            const colors = ['pink', 'purple', 'blue', 'cyan', 'teal'];
             
             for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'glitch-particle';
-                
-                // 随机大小和形状
-                const size = Math.random() * 3 + 1;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${Math.random() * 20 + 5}px`;
-                
-                // 随机动画方向
-                const direction = Math.random() > 0.5 ? 1 : -1;
-                particle.style.left = `${Math.random() * 100}vw`;
-                particle.style.top = `${Math.random() * 100}vh`;
-                
-                // 随机动画延迟和持续时间
-                particle.style.animationDelay = `${Math.random() * 10}s`;
-                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
-                particle.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
-                // 随机颜色
-                const colors = ['#ff008c', '#00ffff', '#ff008c', '#00ffff'];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                container.appendChild(particle);
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    
+                    // 随机选择颜色类
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.className = `particle ${randomColor}`;
+                    
+                    // 随机大小 - 稍微减小最大尺寸以适应更多粒子
+                    const size = Math.random() * 10 + 0.5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    // 随机位置
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    
+                    // 随机动画参数 - 调整动画时间以维持流畅度
+                    const translateX = (Math.random() - 0.5) * 250;
+                    const translateY = (Math.random() - 0.5) * 250;
+                    const duration = Math.random() * 12 + 12;
+                    
+                    // 设置CSS变量
+                    particle.style.setProperty('--translateX', `${translateX}px`);
+                    particle.style.setProperty('--translateY', `${translateY}px`);
+                    particle.style.animationDuration = `${duration}s`;
+                    
+                    // 添加到容器
+                    particlesContainer.appendChild(particle);
+                    
+                    // 动画结束后移除并重新创建
+                    particle.addEventListener('animationend', () => {
+                        if (particlesContainer.contains(particle)) {
+                            particlesContainer.removeChild(particle);
+                        }
+                        // 立即创建新粒子以保持高密度
+                        setTimeout(() => {
+                            createParticles();
+                        }, Math.random() * 500);
+                    });
+                }, Math.random() * 1000); // 大幅缩短初始化间隔
             }
         }
         
-        // 页面加载时创建故障粒子
-        window.addEventListener('DOMContentLoaded', createGlitchParticles);
+        // 页面加载时创建粒子
+        window.addEventListener('DOMContentLoaded', createParticles);
         
         // 页面加载时检查是否需要初始化密码
         async function checkPasswordStatus() {
@@ -562,12 +530,10 @@
                 
                 // 如果返回密码未初始化的错误，则设置为初始化模式
                 if (!data.success && data.message.includes('未初始化')) {
-                    document.getElementById('page-title').innerHTML = '<span class="glitch-text" data-text="飞牛图标管理工具">飞牛图标管理工具</span>';
                     document.getElementById('auth-form').action = '/api/init-password';
                     document.getElementById('submit-btn').textContent = '初始化登录密码';
                 } else {
                     // 正常登录模式
-                    document.getElementById('page-title').innerHTML = '<span class="glitch-text" data-text="飞牛图标管理工具">飞牛图标管理工具</span>';
                     document.getElementById('auth-form').action = '/api/login';
                     document.getElementById('submit-btn').textContent = '接入系统';
                 }
@@ -581,47 +547,9 @@
         // 页面加载时执行检查
         checkPasswordStatus();
         
-        // 添加屏幕故障效果
-        function triggerScreenGlitch() {
-            const glitchOverlay = document.createElement('div');
-            glitchOverlay.style.position = 'fixed';
-            glitchOverlay.style.top = '0';
-            glitchOverlay.style.left = '0';
-            glitchOverlay.style.width = '100%';
-            glitchOverlay.style.height = '100%';
-            glitchOverlay.style.background = 'rgba(0, 255, 255, 0.1)';
-            glitchOverlay.style.zIndex = '9999';
-            glitchOverlay.style.pointerEvents = 'none';
-            glitchOverlay.style.transform = 'translateY(-100%)';
-            glitchOverlay.style.animation = 'glitchFlash 0.3s ease';
-            
-            document.body.appendChild(glitchOverlay);
-            
-            setTimeout(() => {
-                document.body.removeChild(glitchOverlay);
-            }, 300);
-        }
-        
-        // 添加闪烁动画样式
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes glitchFlash {
-                0% { transform: translateY(-100%); opacity: 0; }
-                20% { transform: translateY(0); opacity: 0.8; }
-                40% { transform: translateY(0); opacity: 0.2; }
-                60% { transform: translateY(0); opacity: 0.6; }
-                80% { transform: translateY(0); opacity: 0.3; }
-                100% { transform: translateY(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
-        
         // 登录表单提交处理
         document.getElementById('auth-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // 触发屏幕故障效果
-            triggerScreenGlitch();
             
             const password = document.getElementById('password').value;
             const messageDiv = document.getElementById('message');
@@ -649,10 +577,10 @@
                             window.location.reload();
                         }, 1500);
                     } else {
-                        // 登录成功后跳转到首页
-                        setTimeout(() => {
-                            window.location.href = '/';
-                        }, 1000);
+                        // 登录成功后跳转到首页，并添加登录标记参数
+                    setTimeout(() => {
+                        window.location.href = '/?login=true';
+                    }, 1000);
                     }
                 } else {
                     messageDiv.textContent = data.message;
