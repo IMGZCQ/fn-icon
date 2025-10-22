@@ -44,7 +44,7 @@ window.onload = function() {
     
     // 使用改进的方法检测URL可达性，避免混合内容问题
     function ping(url, timeout = 2000) {
-        console.log(`开始可达性测试: ${url}, 超时设置: ${timeout}ms`);
+        // console.log(`开始可达性测试: ${url}, 超时设置: ${timeout}ms`);
         const startTime = Date.now();
         
         return new Promise((resolve) => {
@@ -54,18 +54,18 @@ window.onload = function() {
             
             // 如果是混合内容情况，我们不能直接fetch，但可以尝试其他方法
             if (isCurrentHttps && isTargetHttp) {
-                console.log(`检测到混合内容: HTTPS页面尝试访问HTTP资源，将采用备选方案`);
+                // console.log(`检测到混合内容: HTTPS页面尝试访问HTTP资源，将采用备选方案`);
                 
                 // 方案1: 尝试通过创建图片对象来检测可达性（某些情况下可以绕过混合内容限制）
                 const img = new Image();
                 const timeoutId = setTimeout(() => {
-                    console.log(`超时: ${url} (${Date.now() - startTime}ms)`);
+                    // console.log(`超时: ${url} (${Date.now() - startTime}ms)`);
                     resolve(false);
                 }, timeout);
                 
                 img.onload = () => {
                     clearTimeout(timeoutId);
-                    console.log(`可达: ${url}`);
+                    // console.log(`可达: ${url}`);
                     resolve(true);
                 };
                 
@@ -73,7 +73,7 @@ window.onload = function() {
                     clearTimeout(timeoutId);
                     // 图片加载失败不代表完全不可达，可能是因为资源类型不匹配或CORS策略
                     // 这里我们返回true，假设内网资源可能是可达的，让用户可以选择尝试访问
-                    console.log(`图片加载失败，但假设内网可能可达: ${url}`);
+                    // console.log(`图片加载失败，但假设内网可能可达: ${url}`);
                     resolve(true);
                 };
                 
@@ -86,7 +86,7 @@ window.onload = function() {
             // 正常情况使用fetch
             const controller = new AbortController();
             const timeoutId = setTimeout(() => {
-                console.log(`超时: ${url} (${Date.now() - startTime}ms)`);
+            //  console.log(`超时: ${url} (${Date.now() - startTime}ms)`);
                 controller.abort();
             }, timeout);
             
@@ -98,13 +98,13 @@ window.onload = function() {
             .then(() => {
                 clearTimeout(timeoutId);
                 const duration = Date.now() - startTime;
-                console.log(`成功: ${url} (${duration}ms)`);
+                // console.log(`成功: ${url} (${duration}ms)`);
                 resolve(true); // 成功连接
             })
             .catch((error) => {
                 clearTimeout(timeoutId);
                 const duration = Date.now() - startTime;
-                console.log(`错误: ${url} (${duration}ms), 错误类型: ${error.name || '未知错误'}`);
+                // console.log(`错误: ${url} (${duration}ms), 错误类型: ${error.name || '未知错误'}`);
                 resolve(false); // 连接失败
             });
         });
@@ -137,7 +137,7 @@ window.onload = function() {
                     
                     // 默认使用外网URL
                     let defaultUrl = outerUrl;
-                    console.log(`初始设置为外网链接: ${outerUrl}`);
+                    // console.log(`初始设置为外网链接: ${outerUrl}`);
                     
                     // 存储URL到元素数据集，供右键菜单使用
                     aTag.dataset.outerUrl = outerUrl;
@@ -156,9 +156,9 @@ window.onload = function() {
                                 if (isReachable) {
                                     // 内网URL可访问，切换为内网链接
                                     aTag.href = innerUrl;
-                                    console.log(`内网链接可达，已切换为内网链接: ${innerUrl}`);
+                                    // console.log(`内网链接可达，已切换为内网链接: ${innerUrl}`);
                                 } else {
-                                    console.log(`内网链接不可达，保持使用外网链接: ${outerUrl}`);
+                                    // console.log(`内网链接不可达，保持使用外网链接: ${outerUrl}`);
                                 }
                             })
                             .catch(error => {
@@ -187,18 +187,18 @@ window.onload = function() {
                         '</div>';
                     targetDiv.appendChild(aTag);
                 });
-                console.log("数据加载完成，共添加", data.length, "条记录");
+                // console.log("数据加载完成，共添加", data.length, "条记录");
             })
             .catch(error => console.error("处理数据时出错:", error));
     }
     function initWithRetry() {
         const targetDiv = findTargetElement();
         if (targetDiv) {
-            console.log("找到目标div元素，开始处理数据");
+            // console.log("找到目标div元素，开始处理数据");
             processData();
         } else if (retryCount < maxRetries) {
             retryCount++;
-            console.log("未找到目标div，将在" + retryInterval + "ms后重试（" + retryCount + "/" + maxRetries + "）");
+            // console.log("未找到目标div，将在" + retryInterval + "ms后重试（" + retryCount + "/" + maxRetries + "）");
             setTimeout(initWithRetry, retryInterval);
         } else {
             console.error("超过最大重试次数（" + maxRetries + "次），仍未找到目标div");
