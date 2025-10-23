@@ -67,7 +67,6 @@
 <img width="2560" height="1439" alt="PixPin_2025-10-23_15-08-41" src="https://github.com/user-attachments/assets/3dea55c2-98b0-4b29-ac62-e047b0d36050" />
 <img src="https://github.com/user-attachments/assets/d64535cc-01d1-41e0-9b03-3371bb65a15d" />
 
-![504585105-dd41a9eb-600a-418b-bb4c-3987fa8ed635](https://github.com/user-attachments/assets/c02f774d-5ffc-47f3-b520-2eb2869b6dc7)
 
 <img width="1279" height="1440" alt="PixPin_2025-10-23_15-30-32" src="https://github.com/user-attachments/assets/b4937a31-e78a-46a4-bc83-08a9ea9718d6" />
 
