@@ -50,16 +50,16 @@
 ### 使用方法
 - 新建Docker compose粘贴以下代码：
   ```bash
- services:
-  fn-icon:
-    container_name: fn-icon
-    image: imgzcq/cqfnicon:latest
-    ports:
-     - 9999:3000
-    volumes:
-     - /usr/trim/www:/public/fnwww
-     - ./conf:/public/conf
-    restart: always
+  services:
+    fn-icon:
+      container_name: fn-icon
+      image: imgzcq/cqfnicon:latest
+      ports:
+       - 9999:3000
+      volumes:
+       - /usr/trim/www:/public/fnwww
+       - ./conf:/public/conf
+      restart: always
 
 效果如图：
 <img width="608" height="1279" alt="PixPin_2025-10-23_00-35-18" src="https://github.com/user-attachments/assets/13fdbc8c-51ab-48e8-9ff7-fa36d8913464" />
