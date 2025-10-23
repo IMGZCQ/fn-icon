@@ -1,4 +1,4 @@
-<img width="2560" height="1439" alt="PixPin_2025-10-23_15-08-41" src="https://github.com/user-attachments/assets/3dea55c2-98b0-4b29-ac62-e047b0d36050" /># fn-icon
+# fn-icon
 ## 飞牛桌面图标管理工具
 ### 实在太强大，让飞牛成为你的导航页，解决Docker应用没有图标，代替收藏夹功能，想放什么就放什么！
 ### 主要功能
@@ -64,7 +64,7 @@
 效果如图：
 <img width="2560" height="1439" alt="PixPin_2025-10-23_15-11-02" src="https://github.com/user-attachments/assets/fb6b5882-68d5-4292-9d4f-dd1ea553614b" />
 <img width="2560" height="1439" alt="PixPin_2025-10-23_15-11-16" src="https://github.com/user-attachments/assets/db2cd37b-a294-408d-a7ee-c247bf5b8f75" />
-
+<img width="2560" height="1439" alt="PixPin_2025-10-23_15-08-41" src="https://github.com/user-attachments/assets/3dea55c2-98b0-4b29-ac62-e047b0d36050" />
 
 
 <img width="1278" height="1399" alt="163950sthv38ptwa8voqi8" src="https://github.com/user-attachments/assets/04c04650-617c-4a23-bcd3-9a771736ec75" />
