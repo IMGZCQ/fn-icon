@@ -1,4 +1,4 @@
-# fn-icon
+<img width="2560" height="1439" alt="PixPin_2025-10-23_15-08-41" src="https://github.com/user-attachments/assets/3dea55c2-98b0-4b29-ac62-e047b0d36050" /># fn-icon
 ## 飞牛桌面图标管理工具
 ### 实在太强大，让飞牛成为你的导航页，解决Docker应用没有图标，代替收藏夹功能，想放什么就放什么！
 ### 主要功能
@@ -62,18 +62,16 @@
       restart: always
 
 效果如图：
-<img width="608" height="1279" alt="PixPin_2025-10-23_00-35-18" src="https://github.com/user-attachments/assets/13fdbc8c-51ab-48e8-9ff7-fa36d8913464" />
-![屏幕截图_22-10-2025_15247_192 168 20 21](https://github.com/user-attachments/assets/d8092cf9-d76f-4b5d-a400-65a4faa88ec8)
-<img width="282" height="462" alt="PixPin_2025-10-22_14-58-50" src="https://github.com/user-attachments/assets/d3ea2fbe-3e35-499d-af00-52566fe01483" />
-<img width="1146" height="1463" alt="image" src="https://github.com/user-attachments/assets/15467490-8c55-4cff-8602-27b7e848cdc0" />
-<img width="1280" height="1400" alt="PixPin_2025-10-20_11-23-53" src="https://github.com/user-attachments/assets/8dfa5afc-2dc6-4a6a-9b8a-2b23a9fdd8aa" />
-<img width="728" height="849" alt="PixPin_2025-10-20_11-23-28" src="https://github.com/user-attachments/assets/61e912ad-33d2-46b0-a780-9f9cd4ce2d39" />
-<img width="693" height="939" alt="PixPin_2025-10-20_11-24-36" src="https://github.com/user-attachments/assets/cc3317c6-af66-4804-a6d7-0d78c6803e89" />
+<img width="2560" height="1439" alt="PixPin_2025-10-23_15-11-02" src="https://github.com/user-attachments/assets/fb6b5882-68d5-4292-9d4f-dd1ea553614b" />
+<img width="2560" height="1439" alt="PixPin_2025-10-23_15-11-16" src="https://github.com/user-attachments/assets/db2cd37b-a294-408d-a7ee-c247bf5b8f75" />
+
+
+
 <img width="1278" height="1399" alt="163950sthv38ptwa8voqi8" src="https://github.com/user-attachments/assets/04c04650-617c-4a23-bcd3-9a771736ec75" />
 ![Honeycam 2025-10-18 14-39-20](https://github.com/user-attachments/assets/ac52d99a-771f-41d5-a2fa-4fda997a1136)
 ![163937sw3000f0st0ajt44](https://github.com/user-attachments/assets/267e1dac-6f01-4e7f-b653-212779adb967)
-<img width="715" height="805" alt="PixPin_2025-10-19_17-30-15" src="https://github.com/user-attachments/assets/6a1d08c2-d251-4a35-af59-e267d11aab89" />
-<img width="421" height="190" alt="012238en9f9djb31abt97m" src="https://github.com/user-attachments/assets/5750fbf3-8d82-4b1a-8133-5286d6a77e90" />
+
+
 
 ## Star History
 
