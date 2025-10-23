@@ -65,7 +65,8 @@
 <img width="2560" height="1439" alt="PixPin_2025-10-23_15-11-02" src="https://github.com/user-attachments/assets/fb6b5882-68d5-4292-9d4f-dd1ea553614b" />
 <img width="2560" height="1439" alt="PixPin_2025-10-23_15-11-16" src="https://github.com/user-attachments/assets/db2cd37b-a294-408d-a7ee-c247bf5b8f75" />
 <img width="2560" height="1439" alt="PixPin_2025-10-23_15-08-41" src="https://github.com/user-attachments/assets/3dea55c2-98b0-4b29-ac62-e047b0d36050" />
-![Honeycam 2025-10-23 15-31-57](https://github.com/user-attachments/assets/d64535cc-01d1-41e0-9b03-3371bb65a15d)
+<img src="https://github.com/user-attachments/assets/d64535cc-01d1-41e0-9b03-3371bb65a15d)" />
+![34](https://github.com/user-attachments/assets/dd41a9eb-600a-418b-bb4c-3987fa8ed635)
 
 <img width="1279" height="1440" alt="PixPin_2025-10-23_15-30-32" src="https://github.com/user-attachments/assets/b4937a31-e78a-46a4-bc83-08a9ea9718d6" />
 
