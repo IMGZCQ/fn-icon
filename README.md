@@ -50,7 +50,7 @@
 ### 使用方法
 - 新建Docker compose粘贴以下代码：
   ```bash
-services:
+ services:
   fn-icon:
     container_name: fn-icon
     image: imgzcq/cqfnicon:latest
