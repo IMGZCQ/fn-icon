@@ -117,7 +117,7 @@
   <div style="border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden; max-width: 100%; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
     <img src="https://github.com/user-attachments/assets/3dea55c2-98b0-4b29-ac62-e047b0d36050" alt="fn-icon界面展示3" style="width: 100%; height: auto;">
   </div>
-  <div style="border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden; max-width: 100%; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <div style="border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden; max-width: 480px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
     <img src="https://github.com/user-attachments/assets/d64535cc-01d1-41e0-9b03-3371bb65a15d" alt="fn-icon界面展示4" style="width: 100%; height: auto;">
   </div>
   <div style="border: 2px solid #e2e8f0; border-radius: 10px; overflow: hidden; max-width: 100%; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
