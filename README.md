@@ -28,7 +28,7 @@
   有兴趣的灵魂请加入Q群组1039270739参与讨论
 </div>
 <div style="background-color: #fff8e1; padding: 15px; border-radius: 8px; border: 1px solid #ffd166;">
-  <strong style="color: #f59e0b;">⚠️ 重要提示：</strong>修改后没生效可能是浏览器缓存导致，尝试清空浏览器缓存或者使用无痕模式浏览效果
+修改后若不生效请清空浏览器缓存或使用无痕模式浏览效果
 </div>
 
 ## <span style="color:#06d6a0">更新日志</span>
