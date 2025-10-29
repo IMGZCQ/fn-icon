@@ -1,7 +1,7 @@
 # <span style="color:#ff6b6b">fn-icon</span> 飞牛桌面图标管理工具
 
 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; margin: 20px 0;">
-  <h2 style="margin-top: 0;">实在太强大！</h2>
+  <h2 style="margin-top: 0;">顶置：本项目已迭代到：https://github.com/IMGZCQ/fndesk </h2>
   <p style="font-size: 18px; margin-bottom: 0;">让飞牛成为你的导航页，解决Docker应用没有图标，代替收藏夹功能，想放什么就放什么！</p>
 </div>
 
