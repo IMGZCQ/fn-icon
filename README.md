@@ -1,4 +1,4 @@
-# <span style="color:#ff6b6b">fn-icon</span> 飞牛桌面图标管理工具
+# <span style="color:#ff6b6b">fn-icon</span> 飞牛图标管理工具
 
 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; color: white; margin: 20px 0;">
   <h2 style="margin-top: 0;">顶置：本项目已迭代到：https://github.com/IMGZCQ/fndesk </h2>
